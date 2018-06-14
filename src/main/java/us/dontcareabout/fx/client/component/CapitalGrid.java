@@ -1,11 +1,9 @@
 package us.dontcareabout.fx.client.component;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.google.gwt.core.shared.GWT;
 import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.core.client.util.DateWrapper;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
@@ -23,19 +21,6 @@ public class CapitalGrid extends Grid<CapitalTX> {
 	public CapitalGrid() {
 		super(new ListStore<>(properties.id()), genColumnModel());
 		getView().setAutoFill(true);
-		for (int i = 0 ; i < 10; i++) {
-			getStore().add(mock());
-		}
-	}
-
-	int counter;
-	private CapitalTX mock() {
-		CapitalTX result = new CapitalTX();
-		result.setId(counter++);
-		result.setDate(new DateWrapper().addDays(-counter).asDate());
-		result.setValue(new Random().nextInt(10000));
-		result.setNote(result.getId() + "??");
-		return result;
 	}
 
 	private static ColumnModel<CapitalTX> genColumnModel() {
