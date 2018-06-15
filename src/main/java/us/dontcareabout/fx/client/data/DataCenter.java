@@ -42,7 +42,10 @@ public class DataCenter {
 		return eventBus.addHandler(CapitalTxReadyEvent.TYPE, handler);
 	}
 
-	public static List<ForeignTX> foreignList;
+	private static List<ForeignTX> foreignList;
+	public static List<ForeignTX> getForeignList() {
+		return foreignList;
+	}
 
 	public static void wantForeignList() {
 		rpc.getForeignList(new AsyncCallback<List<ForeignTX>>() {
