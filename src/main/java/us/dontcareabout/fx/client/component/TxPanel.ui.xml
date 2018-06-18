@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.container"
+	xmlns:f="urn:import:com.sencha.gxt.widget.core.client.form" 
+	xmlns:b="urn:import:com.sencha.gxt.widget.core.client.button"
+	xmlns:gf="urn:import:us.dontcareabout.gxt.client.draw.container">
+	
+	<ui:with field="margin" type="com.sencha.gxt.core.client.util.Margins">
+		<ui:attributes top="0" right="2" bottom="0" left="2" />
+	</ui:with>
+	
+	<ui:with field="VLD" type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
+		<ui:attributes width="1" height="32" margins="{margin}" />
+	</ui:with>
+	
+	<c:VerticalLayoutContainer>
+		<gf:SimpleLayerContainer ui:field="titleLayer" layoutData="{VLD}" />
+		<f:FieldLabel layoutData="{VLD}" text="日期" labelWidth="40">
+			<f:widget>
+				<f:DateField ui:field="date" />
+			</f:widget>
+		</f:FieldLabel>
+		<f:FieldLabel layoutData="{VLD}" text="匯率" labelWidth="40">
+			<f:widget>
+				<f:DoubleField ui:field="rate" />
+			</f:widget>
+		</f:FieldLabel>
+		<f:FieldLabel layoutData="{VLD}" text="金額" labelWidth="40">
+			<f:widget>
+				<f:DoubleField ui:field="value" />
+			</f:widget>
+		</f:FieldLabel>
+		<f:FieldLabel layoutData="{VLD}" text="備註" labelWidth="40">
+			<f:widget>
+				<f:TextField ui:field="note" />
+			</f:widget>
+		</f:FieldLabel>
+		<gf:SimpleLayerContainer ui:field="submitLayer" layoutData="{VLD}" />
+	</c:VerticalLayoutContainer>
+</ui:UiBinder> 
