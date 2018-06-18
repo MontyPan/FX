@@ -3,7 +3,7 @@ package us.dontcareabout.fx.shared;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ForeignTX implements Serializable {
+public class ForeignTX implements Serializable, HasId{
 	private static final long serialVersionUID = 1L;
 
 	private int id;
@@ -23,10 +23,12 @@ public class ForeignTX implements Serializable {
 
 	private String note;
 
+	@Override
 	public int getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}
