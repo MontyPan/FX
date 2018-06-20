@@ -5,6 +5,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
+import us.dontcareabout.fx.client.component.TxPanel;
+import us.dontcareabout.fx.shared.Currency;
+
 public class UiCenter {
 	private final static Viewport viewport = new Viewport();
 	static {
@@ -45,5 +48,26 @@ public class UiCenter {
 		viewport.clear();
 		viewport.add(widget);
 		viewport.forceLayout();
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	private static Widget mainView;
+	public static void mainView() {
+		if (mainView == null) {
+			mainView = new MainView();
+		}
+
+		switchTo(mainView);
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	private static TxPanel txPanel;
+	public static void txDialog(Currency currency, boolean isBuy) {
+		if (txPanel == null) { txPanel = new TxPanel(); }
+
+		txPanel.setType(currency, isBuy);
+		dialog(txPanel, 200, 250);
 	}
 }
