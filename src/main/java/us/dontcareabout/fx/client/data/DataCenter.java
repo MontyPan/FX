@@ -66,4 +66,19 @@ public class DataCenter {
 	public static HandlerRegistration addForeignTxReady(ForeignTxReadyHandler handler) {
 		return eventBus.addHandler(ForeignTxReadyEvent.TYPE, handler);
 	}
+
+	public static void transaction(ForeignTX foreignTX) {
+		rpc.saveTX(foreignTX, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				wantCapitalList();
+				wantForeignList();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
 }
