@@ -11,6 +11,7 @@ import us.dontcareabout.fx.client.RpcService;
 import us.dontcareabout.fx.client.RpcServiceAsync;
 import us.dontcareabout.fx.client.data.CapitalTxReadyEvent.CapitalTxReadyHandler;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
+import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.CapitalTX;
 import us.dontcareabout.fx.shared.ForeignTX;
 
@@ -73,6 +74,7 @@ public class DataCenter {
 			public void onSuccess(Void result) {
 				wantCapitalList();
 				wantForeignList();
+				UiCenter.closeDialog();
 			}
 
 			@Override
