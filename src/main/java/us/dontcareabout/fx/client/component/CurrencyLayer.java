@@ -1,8 +1,11 @@
 package us.dontcareabout.fx.client.component;
 
 import com.sencha.gxt.chart.client.draw.RGB;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
 import us.dontcareabout.fx.client.Util;
+import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.gxt.client.draw.LTextSprite;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
@@ -44,6 +47,20 @@ public class CurrencyLayer extends LayerSprite {
 
 		makeUp(buyBtn);
 		makeUp(sellBtn);
+
+		buyBtn.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				UiCenter.txDialog(currency, true);
+			}
+		});
+
+		sellBtn.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				UiCenter.txDialog(currency, false);
+			}
+		});
 	}
 
 	public void setSummary(double value) {
