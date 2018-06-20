@@ -12,6 +12,9 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 
 import us.dontcareabout.fx.client.Util;
+import us.dontcareabout.fx.client.data.DataCenter;
+import us.dontcareabout.fx.client.data.ForeignTxReadyEvent;
+import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
 import us.dontcareabout.fx.shared.ForeignTX;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 
@@ -21,6 +24,14 @@ public class ForeignGrid extends Grid<ForeignTX> {
 	public ForeignGrid() {
 		super(new ListStore<>(properties.id()), genColumnModel());
 		getView().setAutoFill(true);
+
+		DataCenter.addForeignTxReady(new ForeignTxReadyHandler() {
+			@Override
+			public void onForeignTxReady(ForeignTxReadyEvent event) {
+				getStore().clear();
+				getStore().addAll(DataCenter.getForeignList());
+			}
+		});
 	}
 
 	private static ColumnModel<ForeignTX> genColumnModel() {

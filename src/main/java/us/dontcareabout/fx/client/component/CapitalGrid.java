@@ -12,6 +12,9 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 
 import us.dontcareabout.fx.client.Util;
+import us.dontcareabout.fx.client.data.CapitalTxReadyEvent;
+import us.dontcareabout.fx.client.data.CapitalTxReadyEvent.CapitalTxReadyHandler;
+import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.shared.CapitalTX;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 
@@ -21,6 +24,14 @@ public class CapitalGrid extends Grid<CapitalTX> {
 	public CapitalGrid() {
 		super(new ListStore<>(properties.id()), genColumnModel());
 		getView().setAutoFill(true);
+
+		DataCenter.addCapitalTxReady(new CapitalTxReadyHandler() {
+			@Override
+			public void onCapitalTxReady(CapitalTxReadyEvent event) {
+				getStore().clear();
+				getStore().addAll(DataCenter.getCapitalList());
+			}
+		});
 	}
 
 	private static ColumnModel<CapitalTX> genColumnModel() {
