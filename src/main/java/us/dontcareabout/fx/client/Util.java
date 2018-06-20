@@ -5,6 +5,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import us.dontcareabout.fx.shared.Currency;
 
 public class Util {
+	public static final int SCROLL_HEIGHT = 16;
 	public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("yyyy/MM/dd");
 
 	public static String currencyName(Currency c) {
