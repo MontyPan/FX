@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -43,6 +44,22 @@ public class Bank {
 		idCounter = Math.max(getMaxId(capital), getMaxId(foreign)) + 1;
 	}
 
+	public static void tx(ForeignTX foreign) {
+		settingId(foreign);
+
+		if (foreign.getRate() != 0) {
+			CapitalTX capital = new CapitalTX();
+			settingId(capital);
+			capital.setDate(foreign.getDate());
+			capital.setForeignId(foreign.getId());
+			capital.setValue(Math.round(foreign.getRate() * foreign.getValue()) * -1);
+			saveCapital(capital);
+			foreign.setCapitalId(capital.getId());
+		}
+
+		saveForeign(foreign);
+	}
+
 	public static ArrayList<CapitalTX> getCapitalList() {
 		try {
 			return gson.fromJson(
@@ -53,8 +70,8 @@ public class Bank {
 		}
 	}
 
-	public static void addCapital(CapitalTX tx) {
-		tx.setId(idCounter);
+	public static void saveCapital(CapitalTX tx) {
+		Preconditions.checkArgument(tx.getId() != 0, "沒有 id");
 
 		try {
 			ArrayList<CapitalTX> result = getCapitalList();
@@ -69,8 +86,6 @@ public class Bank {
 		} catch (JsonIOException | JsonSyntaxException | IOException e) {
 			e.printStackTrace();
 		}
-
-		idCounter++;
 	}
 
 	public static ArrayList<ForeignTX> getForeignList() {
@@ -83,8 +98,8 @@ public class Bank {
 		}
 	}
 
-	public static void addForeign(ForeignTX tx) {
-		tx.setId(idCounter);
+	public static void saveForeign(ForeignTX tx) {
+		Preconditions.checkArgument(tx.getId() != 0, "沒有 id");
 
 		try {
 			ArrayList<ForeignTX> result = getForeignList();
@@ -99,8 +114,6 @@ public class Bank {
 		} catch (JsonIOException | JsonSyntaxException | IOException e) {
 			e.printStackTrace();
 		}
-
-		idCounter++;
 	}
 
 	private static <T extends HasId> int getMaxId(ArrayList<T> list) {
@@ -108,5 +121,10 @@ public class Bank {
 
 		Collections.sort(list, HasId.comparator);
 		return list.get(list.size() - 1).getId();
+	}
+
+	private static void settingId(HasId hasId) {
+		hasId.setId(idCounter);
+		idCounter++;
 	}
 }
