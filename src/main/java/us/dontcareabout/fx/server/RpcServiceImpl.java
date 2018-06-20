@@ -20,4 +20,9 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
 	public ArrayList<ForeignTX> getForeignList() {
 		return Bank.getForeignList();
 	}
+
+	@Override
+	public void saveTX(ForeignTX foreignTX) {
+		Bank.tx(foreignTX);
+	}
 }

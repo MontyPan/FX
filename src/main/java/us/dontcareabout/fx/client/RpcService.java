@@ -13,4 +13,6 @@ public interface RpcService extends RemoteService{
 	public List<CapitalTX> getCapitalList();
 
 	public List<ForeignTX> getForeignList();
+
+	public void saveTX(ForeignTX foreignTX);
 }
