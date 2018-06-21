@@ -53,11 +53,11 @@ public class Bank {
 			capital.setDate(foreign.getDate());
 			capital.setForeignId(foreign.getId());
 			capital.setValue(Math.round(foreign.getRate() * foreign.getValue()) * -1);
-			saveCapital(capital);
+			addCapital(capital);
 			foreign.setCapitalId(capital.getId());
 		}
 
-		saveForeign(foreign);
+		addForeign(foreign);
 	}
 
 	public static ArrayList<CapitalTX> getCapitalList() {
@@ -70,7 +70,7 @@ public class Bank {
 		}
 	}
 
-	public static void saveCapital(CapitalTX tx) {
+	public static void addCapital(CapitalTX tx) {
 		Preconditions.checkArgument(tx.getId() != 0, "沒有 id");
 
 		try {
@@ -98,22 +98,26 @@ public class Bank {
 		}
 	}
 
-	public static void saveForeign(ForeignTX tx) {
+	private static void addForeign(ForeignTX tx) {
 		Preconditions.checkArgument(tx.getId() != 0, "沒有 id");
 
 		try {
 			ArrayList<ForeignTX> result = getForeignList();
 			result.add(tx);
-			Files.write(
-				gson.toJson(
-					result,
-					foreignType
-				).getBytes(Charsets.UTF_8),
-				foreignFile
-			);
+			saveForeign(result);
 		} catch (JsonIOException | JsonSyntaxException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void saveForeign(ArrayList<ForeignTX> foreignList) throws IOException {
+		Files.write(
+			gson.toJson(
+				foreignList,
+				foreignType
+			).getBytes(Charsets.UTF_8),
+			foreignFile
+		);
 	}
 
 	private static <T extends HasId> int getMaxId(ArrayList<T> list) {
