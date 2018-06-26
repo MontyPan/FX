@@ -7,6 +7,7 @@ import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelect
 import us.dontcareabout.fx.client.Util;
 import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.Currency;
+import us.dontcareabout.fx.shared.tool.CurrencyUtil;
 import us.dontcareabout.gxt.client.draw.LTextSprite;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
@@ -16,7 +17,7 @@ public class CurrencyLayer extends LayerSprite {
 	private double summary;
 	private double rate;
 
-	private LTextSprite nameTS = new LTextSprite();
+	private TextButton nameTS = new TextButton();
 	private LTextSprite summaryTS = new LTextSprite();
 	private LTextSprite costTS = new LTextSprite();
 	private LTextSprite cashOutTS = new LTextSprite();
@@ -36,9 +37,9 @@ public class CurrencyLayer extends LayerSprite {
 		add(buyBtn);
 		add(sellBtn);
 
-		nameTS.setFontSize(25);
-		nameTS.setFill(RGB.WHITE);
-		nameTS.setText(Util.currencyName(currency));
+		nameTS.setTextColor(RGB.WHITE);
+		nameTS.setBgColor(RGB.BLUE);
+		nameTS.setText(CurrencyUtil.name(currency));
 
 		makeUp(summaryTS);
 		makeUp(costTS);
@@ -80,8 +81,9 @@ public class CurrencyLayer extends LayerSprite {
 
 	@Override
 	protected void adjustMember() {
-		nameTS.setLX(10);
-		nameTS.setLY(10);
+		nameTS.setLX(0);
+		nameTS.setLY(0);
+		nameTS.resize(getWidth(), 30);
 
 		summaryTS.setLX(20);
 		summaryTS.setLY(60);
@@ -96,12 +98,12 @@ public class CurrencyLayer extends LayerSprite {
 		cashOutTS.setLY(160);
 
 		buyBtn.setLX(5);
-		buyBtn.setLY(getHeight() - 45 - Util.SCROLL_HEIGHT);
-		buyBtn.resize(80, 40);
+		buyBtn.setLY(getHeight() - 35 - Util.SCROLL_HEIGHT);
+		buyBtn.resize(80, 30);
 
 		sellBtn.setLX(90);
-		sellBtn.setLY(getHeight() - 45 - Util.SCROLL_HEIGHT);
-		sellBtn.resize(80, 40);
+		sellBtn.setLY(getHeight() - 35 - Util.SCROLL_HEIGHT);
+		sellBtn.resize(80, 30);
 	}
 
 	private void makeUp(TextButton btn) {
