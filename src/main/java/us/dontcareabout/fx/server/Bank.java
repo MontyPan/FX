@@ -5,18 +5,21 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import us.dontcareabout.fx.shared.CapitalTX;
 import us.dontcareabout.fx.shared.ForeignTX;
 import us.dontcareabout.fx.shared.HasId;
+import us.dontcareabout.fx.shared.tool.CurrencyUtil;
+import us.dontcareabout.fx.shared.tool.Matcher;
 import us.dontcareabout.java.common.Paths;
 
 /**
@@ -31,9 +34,7 @@ public class Bank {
 	private static final File foreignFile = new Paths(SETTING.workspace()).append(FOREIGN).toFile();
 
 	private static final Gson gson = new Gson();
-	@SuppressWarnings("serial")
 	private static final Type capitalType = new TypeToken<ArrayList<CapitalTX>>(){}.getType();
-	@SuppressWarnings("serial")
 	private static final Type foreignType = new TypeToken<ArrayList<ForeignTX>>(){}.getType();
 
 	private static int idCounter;
@@ -45,6 +46,26 @@ public class Bank {
 	}
 
 	public static void tx(ForeignTX foreign) {
+		ArrayList<ForeignTX> foreignList = getForeignList();
+
+		//要先判斷如果是賣出的交易，先解決夠不夠賣、對應買入紀錄更新 balance 的邏輯
+		if (foreign.getValue() < 0) {
+			HashMap<ForeignTX, Double> target = Matcher.match(foreignList, foreign.getCurrency(), foreign.getValue(), foreign.getRate());
+
+			//XXX 目前打算靠前端擋，不過嚴格說起來好像應該炸個 exception 比較好？
+			if (target == null) { return; }
+
+			//更新對應的買入資料、以及計算該次賣出交易盈虧
+			double profit = 0.0;
+			for (ForeignTX tx : target.keySet()) {
+				double amount = target.get(tx);
+				profit += (foreign.getRate() - tx.getRate()) * amount;
+				tx.sell(amount);
+			}
+
+			foreign.setProfit(profit);
+		}
+
 		settingId(foreign);
 
 		if (foreign.getRate() != 0) {
@@ -53,11 +74,18 @@ public class Bank {
 			capital.setDate(foreign.getDate());
 			capital.setForeignId(foreign.getId());
 			capital.setValue(Math.round(foreign.getRate() * foreign.getValue()) * -1);
+			capital.setNote((foreign.getValue() > 0 ? "買入" : "賣出") + CurrencyUtil.name(foreign.getCurrency()));
 			addCapital(capital);
 			foreign.setCapitalId(capital.getId());
 		}
 
-		addForeign(foreign);
+		foreignList.add(foreign);
+
+		try {
+			saveForeign(foreignList);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static ArrayList<CapitalTX> getCapitalList() {
