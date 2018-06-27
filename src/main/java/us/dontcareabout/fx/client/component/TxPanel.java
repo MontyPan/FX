@@ -58,6 +58,10 @@ public class TxPanel extends Composite {
 		titleBtn.setText(isBuy ? "買進來" : "賣出去");
 		titleBtn.setTextColor(isBuy ? RGB.RED : RGB.BLUE);
 		submitBtn.setBgColor(isBuy ? RGB.RED : RGB.BLUE);
+		date.clear();
+		rate.clear();
+		value.clear();
+		note.clear();
 	}
 
 	private void transaction() {
