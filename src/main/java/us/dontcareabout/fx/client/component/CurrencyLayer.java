@@ -5,6 +5,10 @@ import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
 import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
 import us.dontcareabout.fx.client.Util;
+import us.dontcareabout.fx.client.data.DataCenter;
+import us.dontcareabout.fx.client.data.ForeignTxReadyEvent;
+import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
+import us.dontcareabout.fx.client.data.TxSummary;
 import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.tool.CurrencyUtil;
@@ -62,6 +66,13 @@ public class CurrencyLayer extends LayerSprite {
 				UiCenter.txDialog(currency, false);
 			}
 		});
+
+		DataCenter.addForeignTxReady(new ForeignTxReadyHandler() {
+			@Override
+			public void onForeignTxReady(ForeignTxReadyEvent event) {
+				update();
+			}
+		});
 	}
 
 	public void setSummary(double value) {
@@ -114,5 +125,11 @@ public class CurrencyLayer extends LayerSprite {
 	private void makeUp(LTextSprite ts) {
 		ts.setFill(RGB.WHITE);
 		ts.setFontSize(22);
+	}
+
+	private void update() {
+		TxSummary result = DataCenter.getSummary(currency);
+		setSummary(result.balance);
+		setCost(result.cost);
 	}
 }
