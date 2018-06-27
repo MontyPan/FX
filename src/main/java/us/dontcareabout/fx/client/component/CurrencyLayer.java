@@ -18,11 +18,10 @@ import us.dontcareabout.gxt.client.draw.component.TextButton;
 
 public class CurrencyLayer extends LayerSprite {
 	private Currency currency;
-	private double summary;
-	private double rate;
+	private double balance;
 
 	private TextButton nameTS = new TextButton();
-	private LTextSprite summaryTS = new LTextSprite();
+	private LTextSprite balanceTS = new LTextSprite();
 	private LTextSprite costTS = new LTextSprite();
 	private LTextSprite cashOutTS = new LTextSprite();
 	private LTextSprite rateTS = new LTextSprite();
@@ -34,7 +33,7 @@ public class CurrencyLayer extends LayerSprite {
 
 		setBgColor(RGB.GREEN);
 		add(nameTS);
-		add(summaryTS);
+		add(balanceTS);
 		add(costTS);
 		add(cashOutTS);
 		add(rateTS);
@@ -45,7 +44,7 @@ public class CurrencyLayer extends LayerSprite {
 		nameTS.setBgColor(RGB.BLUE);
 		nameTS.setText(CurrencyUtil.name(currency));
 
-		makeUp(summaryTS);
+		makeUp(balanceTS);
 		makeUp(costTS);
 		makeUp(rateTS);
 		makeUp(cashOutTS);
@@ -75,19 +74,18 @@ public class CurrencyLayer extends LayerSprite {
 		});
 	}
 
-	public void setSummary(double value) {
-		summary = value;
-		summaryTS.setText("持有：" + value);
+	public void setBalance(double value) {
+		balance = value;
+		balanceTS.setText("持有：" + value);
 	}
 
 	public void setCost(double value) {
 		costTS.setText("成本：" + value);
 	}
 
-	public void setRate(double value) {
-		rate = value;
-		rateTS.setText("買匯：" + value);
-		cashOutTS.setText("套現：" + (rate * summary));
+	public void setRate(double rate) {
+		rateTS.setText("買匯：" + rate);
+		cashOutTS.setText("套現：" + (rate * balance));
 	}
 
 	@Override
@@ -96,8 +94,8 @@ public class CurrencyLayer extends LayerSprite {
 		nameTS.setLY(0);
 		nameTS.resize(getWidth(), 30);
 
-		summaryTS.setLX(20);
-		summaryTS.setLY(60);
+		balanceTS.setLX(20);
+		balanceTS.setLY(60);
 
 		costTS.setLX(20);
 		costTS.setLY(90);
@@ -129,7 +127,7 @@ public class CurrencyLayer extends LayerSprite {
 
 	private void update() {
 		TxSummary result = DataCenter.getSummary(currency);
-		setSummary(result.balance);
+		setBalance(result.balance);
 		setCost(result.cost);
 	}
 }
