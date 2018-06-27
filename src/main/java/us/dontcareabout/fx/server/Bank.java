@@ -50,7 +50,7 @@ public class Bank {
 
 		//要先判斷如果是賣出的交易，先解決夠不夠賣、對應買入紀錄更新 balance 的邏輯
 		if (foreign.getValue() < 0) {
-			HashMap<ForeignTX, Double> target = Matcher.match(foreignList, foreign.getCurrency(), foreign.getValue(), foreign.getRate());
+			HashMap<ForeignTX, Double> target = Matcher.match(foreignList, foreign.getCurrency(), foreign.getValue() * -1, foreign.getRate());
 
 			//XXX 目前打算靠前端擋，不過嚴格說起來好像應該炸個 exception 比較好？
 			if (target == null) { return; }

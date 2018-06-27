@@ -62,6 +62,7 @@ public class Matcher {
 	 * 	</li>
 	 * </ol>
 	 *
+	 * @param value 欲賣出的金額（正值）
 	 * @return 「key 是買入紀錄、value 是該筆買入紀錄要負責賣出的數量」的 map
 	 */
 	public static HashMap<ForeignTX, Double> match(ArrayList<ForeignTX> txList, Currency currency, double value, double rate) {
