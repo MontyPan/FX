@@ -2,6 +2,8 @@ package us.dontcareabout.fx.client.data;
 
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -13,6 +15,7 @@ import us.dontcareabout.fx.client.data.CapitalTxReadyEvent.CapitalTxReadyHandler
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
 import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.CapitalTX;
+import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
 
 public class DataCenter {
@@ -83,4 +86,27 @@ public class DataCenter {
 			}
 		});
 	}
+
+	// ======== 交易數據計算區 ======== //
+	public static TxSummary getSummary(final Currency currency) {
+		Iterable<ForeignTX> txList = Iterables.filter(foreignList, new Predicate<ForeignTX>() {
+			@Override
+			public boolean apply(ForeignTX input) {
+				return input.getCurrency() == currency;
+			}
+		});
+
+		double profit = 0;
+		double balance = 0;
+		double cost = 0;
+
+		for (ForeignTX tx : txList) {
+			profit += tx.getProfit();
+			balance += tx.getBalance();
+			cost += tx.getBalance() * tx.getRate();
+		}
+
+		return new TxSummary(balance, cost, profit);
+	}
+	// ================ //
 }
