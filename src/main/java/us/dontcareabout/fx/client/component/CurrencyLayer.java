@@ -49,20 +49,6 @@ public class CurrencyLayer extends LayerSprite {
 		});
 	}
 
-	public void setBalance(double value) {
-		balance = value;
-		balanceTS.setText("持有：" + value);
-	}
-
-	public void setCost(double value) {
-		costTS.setText("成本：" + value);
-	}
-
-	public void setRate(double rate) {
-		rateTS.setText("買匯：" + rate);
-		cashOutTS.setText("套現：" + (rate * balance));
-	}
-
 	@Override
 	protected void adjustMember() {
 		nameTS.setLX(0);
@@ -91,5 +77,20 @@ public class CurrencyLayer extends LayerSprite {
 		TxSummary result = DataCenter.getSummary(currency);
 		setBalance(result.balance);
 		setCost(result.cost);
+	}
+
+
+	private void setBalance(double value) {
+		balance = value;
+		balanceTS.setText("持有：" + value);
+	}
+
+	private void setCost(double value) {
+		costTS.setText("成本：" + value);
+	}
+
+	private void setRate(double rate) {
+		rateTS.setText("買匯：" + rate);
+		cashOutTS.setText("套現：" + (rate * balance));
 	}
 }
