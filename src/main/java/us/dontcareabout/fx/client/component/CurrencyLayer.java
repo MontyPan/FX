@@ -5,6 +5,8 @@ import com.sencha.gxt.chart.client.draw.RGB;
 import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
+import us.dontcareabout.fx.client.data.RateReadyEvent;
+import us.dontcareabout.fx.client.data.RateReadyEvent.RateReadyHandler;
 import us.dontcareabout.fx.client.data.TxSummary;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.tool.CurrencyUtil;
@@ -47,6 +49,14 @@ public class CurrencyLayer extends LayerSprite {
 				update();
 			}
 		});
+
+		DataCenter.addRateReady(new RateReadyHandler() {
+			@Override
+			public void onRateReady(RateReadyEvent event) {
+				setRate(DataCenter.getRateMap().get(currency));
+				redraw();
+			}
+		});
 	}
 
 	@Override
@@ -78,7 +88,6 @@ public class CurrencyLayer extends LayerSprite {
 		setBalance(result.balance);
 		setCost(result.cost);
 	}
-
 
 	private void setBalance(double value) {
 		balance = value;
