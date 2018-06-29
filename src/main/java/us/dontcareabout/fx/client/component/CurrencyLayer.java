@@ -2,6 +2,7 @@ package us.dontcareabout.fx.client.component;
 
 import com.sencha.gxt.chart.client.draw.RGB;
 
+import us.dontcareabout.fx.client.Util;
 import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
@@ -47,13 +48,14 @@ public class CurrencyLayer extends LayerSprite {
 			@Override
 			public void onForeignTxReady(ForeignTxReadyEvent event) {
 				update();
+				redraw();
 			}
 		});
 
 		DataCenter.addRateReady(new RateReadyHandler() {
 			@Override
 			public void onRateReady(RateReadyEvent event) {
-				setRate(DataCenter.getRateMap().get(currency));
+				update();
 				redraw();
 			}
 		});
@@ -87,19 +89,20 @@ public class CurrencyLayer extends LayerSprite {
 		TxSummary result = DataCenter.getSummary(currency);
 		setBalance(result.balance);
 		setCost(result.cost);
+		setRate(DataCenter.getRateMap().get(currency));
 	}
 
 	private void setBalance(double value) {
 		balance = value;
-		balanceTS.setText("持有：" + value);
+		balanceTS.setText("持有：" + Util.NUMBER_FORMAT.format(value));
 	}
 
 	private void setCost(double value) {
-		costTS.setText("成本：" + value);
+		costTS.setText("成本：" + Util.NUMBER_FORMAT.format(value));
 	}
 
 	private void setRate(double rate) {
 		rateTS.setText("買匯：" + rate);
-		cashOutTS.setText("套現：" + (rate * balance));
+		cashOutTS.setText("套現：" + Util.NUMBER_FORMAT.format((rate * balance)));
 	}
 }
