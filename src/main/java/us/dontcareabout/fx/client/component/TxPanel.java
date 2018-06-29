@@ -16,6 +16,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
+import us.dontcareabout.fx.shared.tool.CurrencyUtil;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
 import us.dontcareabout.gxt.client.draw.container.SimpleLayerContainer;
 
@@ -55,7 +56,7 @@ public class TxPanel extends Composite {
 	public void setType(Currency c, boolean isBuy) {
 		currency = c;
 		txType = isBuy;
-		titleBtn.setText(isBuy ? "買進來" : "賣出去");
+		titleBtn.setText(isBuy ? "買進：" + CurrencyUtil.name(c) : "賣出：" + CurrencyUtil.name(c));
 		titleBtn.setTextColor(isBuy ? RGB.RED : RGB.BLUE);
 		submitBtn.setBgColor(isBuy ? RGB.RED : RGB.BLUE);
 		date.clear();
