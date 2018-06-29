@@ -1,5 +1,6 @@
 package us.dontcareabout.fx.client.data;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.base.Predicate;
@@ -13,6 +14,7 @@ import us.dontcareabout.fx.client.RpcService;
 import us.dontcareabout.fx.client.RpcServiceAsync;
 import us.dontcareabout.fx.client.data.CapitalTxReadyEvent.CapitalTxReadyHandler;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
+import us.dontcareabout.fx.client.data.RateReadyEvent.RateReadyHandler;
 import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.CapitalTX;
 import us.dontcareabout.fx.shared.Currency;
@@ -85,6 +87,30 @@ public class DataCenter {
 				// TODO Auto-generated method stub
 			}
 		});
+	}
+
+	private static HashMap<Currency,Double> rateMap;
+	public static HashMap<Currency,Double> getRateMap() {
+		return rateMap;
+	}
+
+	public static void wantRate() {
+		rpc.getRateMap(new AsyncCallback<HashMap<Currency,Double>>() {
+			@Override
+			public void onSuccess(HashMap<Currency, Double> result) {
+				rateMap = result;
+				eventBus.fireEvent(new RateReadyEvent());
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
+
+	public static HandlerRegistration addRateReady(RateReadyHandler handler) {
+		return eventBus.addHandler(RateReadyEvent.TYPE, handler);
 	}
 
 	// ======== 交易數據計算區 ======== //
