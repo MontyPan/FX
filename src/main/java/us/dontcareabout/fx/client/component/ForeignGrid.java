@@ -7,6 +7,8 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+import com.sencha.gxt.data.shared.Store;
+import com.sencha.gxt.data.shared.Store.StoreFilter;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
@@ -15,15 +17,27 @@ import us.dontcareabout.fx.client.Util;
 import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
+import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent;
+import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent.ChangeCurrencyHandler;
+import us.dontcareabout.fx.client.ui.UiCenter;
+import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
+import us.dontcareabout.gwt.client.Console;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 
 public class ForeignGrid extends Grid<ForeignTX> {
 	private static final Properties properties = GWT.create(Properties.class);
 
+	private Filter filter = new Filter();
+
 	public ForeignGrid() {
 		super(new ListStore<>(properties.id()), genColumnModel());
+
+		getStore().addFilter(filter);
+		getStore().setEnableFilters(true);
+
 		getView().setAutoFill(true);
+		getView().setEmptyText("請選擇貨幣");
 
 		DataCenter.addForeignTxReady(new ForeignTxReadyHandler() {
 			@Override
@@ -32,11 +46,26 @@ public class ForeignGrid extends Grid<ForeignTX> {
 				getStore().addAll(DataCenter.getForeignList());
 			}
 		});
+
+		UiCenter.addChangeCurrency(new ChangeCurrencyHandler() {
+			@Override
+			public void onChangeCurrency(ChangeCurrencyEvent event) {
+				changeCurrency(event.data);
+			}
+		});
+	}
+
+	private void changeCurrency(Currency currency) {
+		if (filter.getCurrency() == currency) { return; }
+
+		filter.setCurrency(currency);
+		getStore().setEnableFilters(false);
+		getStore().setEnableFilters(true);
 	}
 
 	private static ColumnModel<ForeignTX> genColumnModel() {
 		ArrayList<ColumnConfig<ForeignTX, ?>> result = new ArrayList<>();
-		result.add(new ColumnConfig<ForeignTX, String>(Properties.date, 100, "日期"));
+		result.add(new ColumnConfig<ForeignTX, String>(Properties.date, 150, "日期"));
 		result.add(new ColumnConfig<ForeignTX, Double>(properties.income(), 100, "存入"));
 		result.add(new ColumnConfig<ForeignTX, Double>(properties.outgoing(), 100, "轉出"));
 		result.add(new ColumnConfig<ForeignTX, Double>(properties.rate(), 100, "匯率"));
@@ -57,5 +86,19 @@ public class ForeignGrid extends Grid<ForeignTX> {
 		ValueProvider<ForeignTX, Double> outgoing();
 		ValueProvider<ForeignTX, Double> rate();
 		ValueProvider<ForeignTX, String> note();
+	}
+
+	private class Filter implements StoreFilter<ForeignTX> {
+		private Currency currency;
+
+		void setCurrency(Currency c) { this.currency = c; }
+
+		Currency getCurrency() { return currency; }
+
+		@Override
+		public boolean select(Store<ForeignTX> store, ForeignTX parent, ForeignTX item) {
+			Console.log(currency == null);
+			return currency == null ? false : item.getCurrency() == currency;
+		}
 	}
 }
