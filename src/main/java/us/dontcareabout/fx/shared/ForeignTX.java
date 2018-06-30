@@ -131,7 +131,7 @@ public class ForeignTX implements Serializable, HasId{
 	public void sell(double v) {
 		Preconditions.checkArgument(v > 0, "賣出負數？不用這麼扭曲吧？");
 		Preconditions.checkState(value > 0, "賣出的紀錄不能再賣出");
-		Preconditions.checkState(balance >= value, "餘額不足");
+		Preconditions.checkState(balance >= v, "餘額不足");
 
 		balance -= v;
 	}
