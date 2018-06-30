@@ -1,11 +1,14 @@
 package us.dontcareabout.fx.client.ui;
 
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
 import us.dontcareabout.fx.client.component.TxPanel;
+import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent.ChangeCurrencyHandler;
 import us.dontcareabout.fx.shared.Currency;
 
 public class UiCenter {
@@ -69,5 +72,17 @@ public class UiCenter {
 
 		txPanel.setType(currency, isBuy);
 		dialog(txPanel, 200, 250);
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	private final static SimpleEventBus eventBus = new SimpleEventBus();
+
+	public static void changeCurrency(Currency currency) {
+		eventBus.fireEvent(new ChangeCurrencyEvent(currency));
+	}
+
+	public static HandlerRegistration addChangeCurrency(ChangeCurrencyHandler handler) {
+		return eventBus.addHandler(ChangeCurrencyEvent.TYPE, handler);
 	}
 }

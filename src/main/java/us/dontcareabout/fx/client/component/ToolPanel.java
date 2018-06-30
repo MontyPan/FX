@@ -1,6 +1,7 @@
 package us.dontcareabout.fx.client.component;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -29,6 +30,11 @@ public class ToolPanel extends Composite {
 	@UiHandler("sellBtn")
 	void sellHandler(SelectEvent se) {
 		tx(false);
+	}
+
+	@UiHandler("currencyCB")
+	void currencyChange(SelectionEvent<Currency> event) {
+		UiCenter.changeCurrency(event.getSelectedItem());
 	}
 
 	private void tx(boolean isBuy) {
