@@ -113,6 +113,10 @@ public class DataCenter {
 		return eventBus.addHandler(RateReadyEvent.TYPE, handler);
 	}
 
+	public static boolean isAllReady() {
+		return rateMap != null && foreignList != null;
+	}
+
 	// ======== 交易數據計算區 ======== //
 	public static TxSummary getSummary(final Currency currency) {
 		Iterable<ForeignTX> txList = Iterables.filter(foreignList, new Predicate<ForeignTX>() {

@@ -86,6 +86,8 @@ public class CurrencyLayer extends LayerSprite {
 	}
 
 	private void update() {
+		if (!DataCenter.isAllReady()) { return; }
+
 		TxSummary result = DataCenter.getSummary(currency);
 		setBalance(result.balance);
 		setCost(result.cost);
