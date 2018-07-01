@@ -70,12 +70,12 @@ public class Matcher {
 
 		//先找賣出會賺的交易紀錄
 		for (ForeignTX tx : profitTX(txList, currency, value, rate)) {
-			if (value <= tx.getValue()) {
+			if (value <= tx.getBalance()) {
 				result.put(tx, value);
 				value = 0;
 			} else {
-				result.put(tx, tx.getValue());
-				value -= tx.getValue();
+				result.put(tx, tx.getBalance());
+				value -= tx.getBalance();
 			}
 
 			if (value == 0) { return result; }
@@ -84,12 +84,12 @@ public class Matcher {
 		//value 還是沒用完，只好找賣出會賠的交易紀錄
 		//其實跟上一段邏輯完全一樣，但是懶得抽共用了（才兩次！才兩次而已！ [被毆飛]）
 		for (ForeignTX tx : lossTX(txList, currency, value, rate)) {
-			if (value <= tx.getValue()) {
+			if (value <= tx.getBalance()) {
 				result.put(tx, value);
 				value = 0;
 			} else {
-				result.put(tx, tx.getValue());
-				value -= tx.getValue();
+				result.put(tx, tx.getBalance());
+				value -= tx.getBalance();
 			}
 
 			if (value == 0) { return result; }

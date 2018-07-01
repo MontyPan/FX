@@ -29,6 +29,32 @@ public class MatcherTest {
 		}
 	}
 
+	/** 確認是檢查 balance 而不是 value */
+	@Test
+	public void balance_profit() {
+		txList.get(1).sell(10);
+		Assert.assertEquals(
+			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 31.5)), "0:10.0;1:90.0;"
+		);
+	}
+
+	/** 確認是檢查 balance 而不是 value */
+	public void balance_both() {
+		txList.get(3).sell(50);
+		Assert.assertEquals(
+			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29.9)), "0:50.0;3:50.0;"
+		);
+	}
+
+	/** 確認是檢查 balance 而不是 value */
+	@Test
+	public void balance_loss() {
+		txList.get(5).sell(50);
+		Assert.assertEquals(
+			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 34)), "2:50.0;5:50.0;"
+		);
+	}
+
 	/**	單筆大於賣出數量 */
 	@Test
 	public void profit_1() {
@@ -114,7 +140,6 @@ public class MatcherTest {
 			sb.append(tx.getId() + ":" + result.get(tx) + ";");
 		}
 
-		System.out.println(sb);
 		return sb.toString();
 	}
 
