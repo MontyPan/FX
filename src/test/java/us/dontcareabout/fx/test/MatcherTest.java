@@ -34,7 +34,8 @@ public class MatcherTest {
 	public void balance_profit() {
 		txList.get(1).sell(10);
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 31.5)), "0:10.0;1:90.0;"
+			"0:10.0;1:90.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 31.5))
 		);
 	}
 
@@ -42,7 +43,8 @@ public class MatcherTest {
 	public void balance_both() {
 		txList.get(3).sell(50);
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29.9)), "0:50.0;3:50.0;"
+			"0:50.0;3:50.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29.9))
 		);
 	}
 
@@ -51,7 +53,8 @@ public class MatcherTest {
 	public void balance_loss() {
 		txList.get(5).sell(50);
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 34)), "2:50.0;5:50.0;"
+			"2:50.0;5:50.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 34))
 		);
 	}
 
@@ -59,7 +62,8 @@ public class MatcherTest {
 	@Test
 	public void profit_1() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 99, 31.5)), "1:99.0;"
+			"1:99.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 99, 31.5))
 		);
 	}
 
@@ -67,7 +71,8 @@ public class MatcherTest {
 	@Test
 	public void profit_2() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 31.5)), "1:100.0;"
+			"1:100.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 100, 31.5))
 		);
 	}
 
@@ -75,7 +80,8 @@ public class MatcherTest {
 	@Test
 	public void profit_3() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 31.5)), "0:50.0;1:100.0;"
+			"0:50.0;1:100.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 31.5))
 		);
 	}
 
@@ -83,7 +89,8 @@ public class MatcherTest {
 	@Test
 	public void profit_4() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29)), "0:50.0;3:100.0;"
+			"0:50.0;3:100.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29))
 		);
 	}
 
@@ -91,7 +98,8 @@ public class MatcherTest {
 	@Test
 	public void both() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29.9)), "0:50.0;3:100.0;"
+			"0:50.0;3:100.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 29.9))
 		);
 	}
 
@@ -99,14 +107,16 @@ public class MatcherTest {
 	@Test
 	public void loss_1() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 99, 34)), "5:99.0;"
+			"5:99.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 99, 34))
 		);
 	}
 
 	@Test
 	public void loss_2() {
 		Assert.assertEquals(
-			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 34)), "2:50.0;5:100.0;"
+			"2:50.0;5:100.0;",
+			toStringAnswer(Matcher.match(txList, Currency.USD, 150, 34))
 		);
 	}
 
