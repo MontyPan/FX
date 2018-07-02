@@ -136,6 +136,22 @@ public class MatcherTest {
 		);
 	}
 
+	@Test
+	public void float_1() {
+		ArrayList<ForeignTX> list = new ArrayList<>();
+		double[] value	= {209.91, 106.63, 109.08};
+		double[] rate	= {47.64, 46.89, 45.84};
+
+		for (int i = 0; i < value.length; i++) {
+			list.add(mock(i, Currency.AUD, new Date(i*86400000), value[i], rate[i]));
+		}
+
+		Assert.assertEquals(
+			"0:209.91;1:106.63;2:109.08;",
+			toStringAnswer(Matcher.match(list, Currency.AUD, 425.62, 47.76))
+		);
+	}
+
 	private static String toStringAnswer(HashMap<ForeignTX, Double> result) {
 		StringBuffer sb = new StringBuffer();
 		ArrayList<ForeignTX> txList = Lists.newArrayList(result.keySet());
