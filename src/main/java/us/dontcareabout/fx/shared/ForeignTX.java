@@ -5,6 +5,8 @@ import java.util.Date;
 
 import com.google.common.base.Preconditions;
 
+import us.dontcareabout.fx.shared.tool.CurrencyUtil;
+
 public class ForeignTX implements Serializable, HasId{
 	private static final long serialVersionUID = 1L;
 
@@ -133,6 +135,6 @@ public class ForeignTX implements Serializable, HasId{
 		Preconditions.checkState(value > 0, "賣出的紀錄不能再賣出");
 		Preconditions.checkState(balance >= v, "餘額不足");
 
-		balance -= v;
+		balance = CurrencyUtil.subtract(balance, v);
 	}
 }

@@ -75,7 +75,7 @@ public class Matcher {
 				value = 0;
 			} else {
 				result.put(tx, tx.getBalance());
-				value -= tx.getBalance();
+				value = CurrencyUtil.subtract(value, tx.getBalance());
 			}
 
 			if (value == 0) { return result; }
@@ -89,7 +89,7 @@ public class Matcher {
 				value = 0;
 			} else {
 				result.put(tx, tx.getBalance());
-				value -= tx.getBalance();
+				value = CurrencyUtil.subtract(value, tx.getBalance());
 			}
 
 			if (value == 0) { return result; }

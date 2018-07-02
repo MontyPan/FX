@@ -59,7 +59,16 @@ public class Bank {
 			double profit = 0.0;
 			for (ForeignTX tx : target.keySet()) {
 				double amount = target.get(tx);
-				profit += (foreign.getRate() - tx.getRate()) * amount;
+
+				//profit += (foreign.getRate() - tx.getRate()) * amount;
+				profit = CurrencyUtil.add(
+					profit,
+					CurrencyUtil.multiply(
+						CurrencyUtil.subtract(foreign.getRate(), tx.getRate()),
+						amount
+					)
+				);
+
 				tx.sell(amount);
 			}
 
