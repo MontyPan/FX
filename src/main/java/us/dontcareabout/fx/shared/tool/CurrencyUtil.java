@@ -1,5 +1,7 @@
 package us.dontcareabout.fx.shared.tool;
 
+import java.math.BigDecimal;
+
 import us.dontcareabout.fx.shared.Currency;
 
 public class CurrencyUtil {
@@ -48,5 +50,24 @@ public class CurrencyUtil {
 		default:
 			return "P 幣";
 		}
+	}
+
+	public static BigDecimal toBD(double a) {
+		return new BigDecimal(String.valueOf(a));
+	}
+
+	public static double add(double a, double b) {
+		return toBD(a).add(toBD(b)).doubleValue();
+	}
+
+	/**
+	 * @return a - b
+	 */
+	public static double subtract(double a, double b) {
+		return toBD(a).subtract(toBD(b)).doubleValue();
+	}
+
+	public static double multiply(double a, double b) {
+		return toBD(a).multiply(toBD(b)).doubleValue();
 	}
 }
