@@ -3,6 +3,7 @@ package us.dontcareabout.fx.client.component;
 import java.util.ArrayList;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.uibinder.client.UiConstructor;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
@@ -22,7 +23,6 @@ import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent.ChangeCurrencyHandler;
 import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
-import us.dontcareabout.gwt.client.Console;
 import us.dontcareabout.gxt.client.model.GetValueProvider;
 
 public class ForeignGrid extends Grid<ForeignTX> {
@@ -30,8 +30,11 @@ public class ForeignGrid extends Grid<ForeignTX> {
 
 	private Filter filter = new Filter();
 
-	public ForeignGrid() {
-		super(new ListStore<>(properties.id()), genColumnModel());
+	@UiConstructor
+	public ForeignGrid(boolean isBuy) {
+		super(new ListStore<>(properties.id()), genColumnModel(isBuy));
+
+		filter.setBuyOrSell(isBuy);
 
 		getStore().addFilter(filter);
 		getStore().setEnableFilters(true);
@@ -63,12 +66,19 @@ public class ForeignGrid extends Grid<ForeignTX> {
 		getStore().setEnableFilters(true);
 	}
 
-	private static ColumnModel<ForeignTX> genColumnModel() {
+	private static ColumnModel<ForeignTX> genColumnModel(boolean isBuy) {
 		ArrayList<ColumnConfig<ForeignTX, ?>> result = new ArrayList<>();
 		result.add(new ColumnConfig<ForeignTX, String>(Properties.date, 150, "日期"));
-		result.add(new ColumnConfig<ForeignTX, Double>(properties.income(), 100, "存入"));
-		result.add(new ColumnConfig<ForeignTX, Double>(properties.outgoing(), 100, "轉出"));
 		result.add(new ColumnConfig<ForeignTX, Double>(properties.rate(), 100, "匯率"));
+
+		if (isBuy) {
+			result.add(new ColumnConfig<ForeignTX, Double>(properties.income(), 100, "存入"));
+			result.add(new ColumnConfig<ForeignTX, Double>(properties.balance(), 100, "結餘"));
+		} else {
+			result.add(new ColumnConfig<ForeignTX, Double>(properties.outgoing(), 100, "轉出"));
+			result.add(new ColumnConfig<ForeignTX, Double>(properties.profit(), 100, "盈餘"));
+		}
+
 		result.add(new ColumnConfig<ForeignTX, String>(properties.note(), 200, "備註"));
 		return new ColumnModel<>(result);
 	}
@@ -86,19 +96,25 @@ public class ForeignGrid extends Grid<ForeignTX> {
 		ValueProvider<ForeignTX, Double> outgoing();
 		ValueProvider<ForeignTX, Double> rate();
 		ValueProvider<ForeignTX, String> note();
+		ValueProvider<ForeignTX, Double> profit();
+		ValueProvider<ForeignTX, Double> balance();
 	}
 
 	private class Filter implements StoreFilter<ForeignTX> {
 		private Currency currency;
+		private boolean isBuy;
 
 		void setCurrency(Currency c) { this.currency = c; }
+
+		void setBuyOrSell(boolean isBuy) { this.isBuy = isBuy; }
 
 		Currency getCurrency() { return currency; }
 
 		@Override
 		public boolean select(Store<ForeignTX> store, ForeignTX parent, ForeignTX item) {
-			Console.log(currency == null);
-			return currency == null ? false : item.getCurrency() == currency;
+			if (currency == null) { return false; }
+			if (currency != item.getCurrency()) { return false; }
+			return isBuy ? item.getValue() > 0 : item.getValue() < 0;
 		}
 	}
 }
