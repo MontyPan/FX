@@ -3,12 +3,24 @@
 	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.container"  
 	xmlns:fx="urn:import:us.dontcareabout.fx.client.component">
 
+	<ui:with field="margin" type="com.sencha.gxt.core.client.util.Margins">
+		<ui:attributes top="1" right="3" bottom="1" left="2" />
+	</ui:with>
+	
 	<ui:with field="listVLD" type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
 		<ui:attributes width="1" height="1" />
 	</ui:with>
 	
+	<ui:with field="gridHLD" type="com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData">
+		<ui:attributes width="0.5" height="1" margins="{margin}"/>
+	</ui:with>
+	
+	
 	<c:VerticalLayoutContainer>
 		<fx:CurrencyTitleLayer ui:field="title" />
-		<fx:ForeignGrid layoutData="{listVLD}" />
+		<c:HorizontalLayoutContainer layoutData="{listVLD}">
+			<fx:ForeignGrid ui:field="buyGrid" layoutData="{gridHLD}" isBuy="true"/>
+			<fx:ForeignGrid ui:field="sellGrid" layoutData="{gridHLD}" isBuy="false" />
+		</c:HorizontalLayoutContainer>
 	</c:VerticalLayoutContainer>
-</ui:UiBinder> 
+</ui:UiBinder>
