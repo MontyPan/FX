@@ -58,6 +58,7 @@ public class DataCenter {
 			@Override
 			public void onSuccess(List<ForeignTX> result) {
 				foreignList = result;
+				summaryMap.clear();
 				eventBus.fireEvent(new ForeignTxReadyEvent());
 			}
 
@@ -99,6 +100,7 @@ public class DataCenter {
 			@Override
 			public void onSuccess(HashMap<Currency, Double> result) {
 				rateMap = result;
+				summaryMap.clear();
 				eventBus.fireEvent(new RateReadyEvent());
 			}
 
@@ -118,7 +120,19 @@ public class DataCenter {
 	}
 
 	// ======== 交易數據計算區 ======== //
+	private static final HashMap<Currency, TxSummary> summaryMap = new HashMap<>();
 	public static TxSummary getSummary(final Currency currency) {
+		TxSummary result = summaryMap.get(currency);
+
+		if (result == null) {
+			result = calSummary(currency);
+			summaryMap.put(currency, result);
+		}
+
+		return result;
+	}
+
+	private static TxSummary calSummary(final Currency currency) {
 		Iterable<ForeignTX> txList = Iterables.filter(foreignList, new Predicate<ForeignTX>() {
 			@Override
 			public boolean apply(ForeignTX input) {
