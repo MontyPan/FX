@@ -150,7 +150,7 @@ public class DataCenter {
 			cost += tx.getBalance() * tx.getRate();
 		}
 
-		return new TxSummary(balance, cost, profit);
+		return new TxSummary(currency, balance, cost, profit);
 	}
 	// ================ //
 }
