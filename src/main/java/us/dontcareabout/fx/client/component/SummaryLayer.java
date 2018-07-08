@@ -15,7 +15,7 @@ import us.dontcareabout.gxt.client.draw.LTextSprite;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
 
-public class CurrencyLayer extends LayerSprite {
+public class SummaryLayer extends LayerSprite {
 	private Currency currency;
 	private double balance;
 
@@ -25,7 +25,7 @@ public class CurrencyLayer extends LayerSprite {
 	private LTextSprite cashOutTS = new LTextSprite();
 	private LTextSprite rateTS = new LTextSprite();
 
-	public CurrencyLayer(Currency c) {
+	public SummaryLayer(Currency c) {
 		currency = c;
 
 		setBgColor(RGB.GREEN);

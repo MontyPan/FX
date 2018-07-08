@@ -33,7 +33,7 @@ import us.dontcareabout.fx.client.data.RateReadyEvent.RateReadyHandler;
 import us.dontcareabout.fx.client.data.TxSummary;
 import us.dontcareabout.fx.shared.Currency;
 
-public 	class CurrencyMarquee extends HorizontalLayoutContainer {
+public 	class SummaryList extends HorizontalLayoutContainer {
 	private static final HorizontalLayoutData CURRENCY_HLD = new HorizontalLayoutData(140, 1, new Margins(1));
 
 	private final ListStore<TxSummary> store = new ListStore<>(new ModelKeyProvider<TxSummary>() {
@@ -42,14 +42,14 @@ public 	class CurrencyMarquee extends HorizontalLayoutContainer {
 			return item.currency.name();
 		}
 	});
-	private final HashMap<Currency, CurrencyLayer> currencyMap = new HashMap<>();
+	private final HashMap<Currency, SummaryLayer> currencyMap = new HashMap<>();
 
-	public CurrencyMarquee() {
+	public SummaryList() {
 		//要先 new 好 CurrencyLayer
 		//這樣 CurrencyLayer 才能處理一開始的 ForeignTxReady / RateReady
 		for (Currency c : Currency.values()) {
 			if (c == Currency.NTD) { continue; }
-			currencyMap.put(c, new CurrencyLayer(c));
+			currencyMap.put(c, new SummaryLayer(c));
 		}
 
 		setScrollMode(ScrollMode.AUTOX);
