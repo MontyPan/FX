@@ -1,0 +1,42 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.container" 
+	xmlns:fx="urn:import:us.dontcareabout.fx.client.component" 
+	xmlns:b="urn:import:com.sencha.gxt.widget.core.client.button" 
+	xmlns:core="urn:import:com.sencha.gxt.widget.core.client" 
+	xmlns:view="urn:import:us.dontcareabout.fx.client.ui">
+	
+	<ui:with field="margin" type="com.sencha.gxt.core.client.util.Margins">
+		<ui:attributes top="1" right="2" bottom="1" left="2" />
+	</ui:with>
+	
+	<ui:with field="northBLD" type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
+		<ui:attributes size="180" />
+	</ui:with>
+
+	<ui:with field="eastBLD" type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
+		<ui:attributes size="350" collapsible="true" collapsed="true" />
+	</ui:with>
+	
+	<ui:with field="southBLD" type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
+		<ui:attributes size="45" />
+	</ui:with>
+	
+	
+	<c:BorderLayoutContainer>
+		<c:north layoutData="{northBLD}">
+			<fx:SummaryList />
+		</c:north>
+		<c:center>
+			<view:ForeignView />
+		</c:center>
+		<c:east layoutData="{eastBLD}">
+			<core:ContentPanel>
+				<fx:CapitalGrid />
+			</core:ContentPanel>
+		</c:east>
+		<c:south layoutData="{southBLD}">
+			<fx:ToolPanel />
+		</c:south>
+	</c:BorderLayoutContainer>
+</ui:UiBinder> 
