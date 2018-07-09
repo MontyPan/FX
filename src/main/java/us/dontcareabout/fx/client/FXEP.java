@@ -14,7 +14,7 @@ import us.dontcareabout.gwt.client.GFEP;
 
 public class FXEP extends GFEP {
 	@Override
-	protected String version() { return "0.0.1"; }
+	protected String version() { return "0.0.2"; }
 
 	@Override
 	protected String defaultLocale() { return "zh_TW"; }
