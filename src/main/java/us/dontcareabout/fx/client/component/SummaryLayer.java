@@ -55,6 +55,9 @@ public class SummaryLayer extends LayerSprite {
 		DataCenter.addRateReady(new RateReadyHandler() {
 			@Override
 			public void onRateReady(RateReadyEvent event) {
+				//WA GF #30 修正後應該就不需要這個了
+				if (!asWidget().isAttached()) { return; }
+
 				update();
 				redraw();
 			}
