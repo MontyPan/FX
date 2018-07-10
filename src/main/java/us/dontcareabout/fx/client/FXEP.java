@@ -1,5 +1,7 @@
 package us.dontcareabout.fx.client;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.sencha.gxt.core.shared.event.GroupingHandlerRegistration;
 
 import us.dontcareabout.fx.client.data.CapitalTxReadyEvent;
@@ -60,5 +62,17 @@ public class FXEP extends GFEP {
 		DataCenter.wantCapitalList();
 		DataCenter.wantForeignList();
 		DataCenter.wantRate();
+
+		//由 client side 發起，定時更新匯率
+		Scheduler.get().scheduleFixedDelay(
+			new RepeatingCommand() {
+				@Override
+				public boolean execute() {
+					DataCenter.wantRate();
+					return true;
+				}
+			},
+			60000	//TODO 改成可自行設定
+		);
 	}
 }
