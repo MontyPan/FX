@@ -14,7 +14,8 @@ public class Ctbc extends RateFetcher {
 	@Override
 	void fetchAndParse() {
 		try {
-			Document doc = Jsoup.connect("https://www.ctbcbank.com/CTCBPortalWeb/toPage?id=TW_RB_CM_ebank_018001").get();
+			Document doc = Jsoup.connect("https://www.ctbcbank.com/CTCBPortalWeb/toPage?id=TW_RB_CM_ebank_018001")
+				.validateTLSCertificates(false).get();
 
 			for (Currency c : Currency.values()) {
 				if (c == Currency.NTD) { continue; }
