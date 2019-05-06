@@ -10,6 +10,8 @@ import us.dontcareabout.fx.shared.Currency;
 /**
  * 中國信託
  */
+//2019.05 官網改版，變成噁心的 SPA 架構，目前放棄中
+@Deprecated
 public class Ctbc extends RateFetcher {
 	@Override
 	void fetchAndParse() {
