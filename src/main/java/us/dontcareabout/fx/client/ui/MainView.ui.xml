@@ -18,11 +18,6 @@
 		<ui:attributes size="350" collapsible="true" collapsed="true" />
 	</ui:with>
 	
-	<ui:with field="southBLD" type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
-		<ui:attributes size="45" />
-	</ui:with>
-	
-	
 	<c:BorderLayoutContainer>
 		<c:north layoutData="{northBLD}">
 			<fx:SummaryList />
@@ -35,8 +30,5 @@
 				<fx:CapitalGrid />
 			</core:ContentPanel>
 		</c:east>
-		<c:south layoutData="{southBLD}">
-			<fx:ToolPanel />
-		</c:south>
 	</c:BorderLayoutContainer>
 </ui:UiBinder> 
