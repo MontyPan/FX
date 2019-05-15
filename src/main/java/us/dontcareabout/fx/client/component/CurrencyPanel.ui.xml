@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.container" 
+	xmlns:f="urn:import:com.sencha.gxt.widget.core.client.form" xmlns:fx="urn:import:us.dontcareabout.fx.client.component" xmlns:b="urn:import:com.sencha.gxt.widget.core.client.button">
+	
+	<ui:with field="margin" type="com.sencha.gxt.core.client.util.Margins">
+		<ui:attributes top="10" right="0" bottom="10" left="8" />
+	</ui:with>
+	<ui:with field="cbHLD" type="com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData">
+		<ui:attributes height="42" margins="{margin}" />
+	</ui:with>
+	<ui:with field="btnHLD" type="com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData">
+		<ui:attributes width="80" height="42" margins="{margin}" />
+	</ui:with>
+
+	
+	<c:HorizontalLayoutContainer>
+		<fx:CurrencyCB ui:field="currencyCB" layoutData="{cbHLD}" />
+		<b:TextButton ui:field="submitBtn" layoutData="{btnHLD}" text="確定" />
+	</c:HorizontalLayoutContainer>
+</ui:UiBinder> 
