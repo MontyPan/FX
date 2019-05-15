@@ -15,6 +15,7 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 
 import us.dontcareabout.fx.client.Util;
+import us.dontcareabout.fx.client.Util.RightColumnConfig;
 import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
@@ -69,14 +70,14 @@ public class ForeignGrid extends Grid<ForeignTX> {
 	private static ColumnModel<ForeignTX> genColumnModel(boolean isBuy) {
 		ArrayList<ColumnConfig<ForeignTX, ?>> result = new ArrayList<>();
 		result.add(new ColumnConfig<ForeignTX, String>(Properties.date, 150, "日期"));
-		result.add(new ColumnConfig<ForeignTX, Double>(properties.rate(), 100, "匯率"));
+		result.add(new RightColumnConfig<>(properties.rate(), 100, "匯率"));
 
 		if (isBuy) {
-			result.add(new ColumnConfig<ForeignTX, Double>(properties.income(), 100, "存入"));
-			result.add(new ColumnConfig<ForeignTX, Double>(properties.balance(), 100, "結餘"));
+			result.add(new RightColumnConfig<>(properties.income(), 100, "存入"));
+			result.add(new RightColumnConfig<>(properties.balance(), 100, "結餘"));
 		} else {
-			result.add(new ColumnConfig<ForeignTX, Double>(properties.outgoing(), 100, "轉出"));
-			result.add(new ColumnConfig<ForeignTX, Double>(properties.profit(), 100, "盈餘"));
+			result.add(new RightColumnConfig<>(properties.outgoing(), 100, "轉出"));
+			result.add(new RightColumnConfig<>(properties.profit(), 100, "盈餘"));
 		}
 
 		result.add(new ColumnConfig<ForeignTX, String>(properties.note(), 200, "備註"));
@@ -114,7 +115,7 @@ public class ForeignGrid extends Grid<ForeignTX> {
 		public boolean select(Store<ForeignTX> store, ForeignTX parent, ForeignTX item) {
 			if (currency == null) { return false; }
 			if (currency != item.getCurrency()) { return false; }
-			return isBuy ? item.getValue() > 0 : item.getValue() < 0;
+			return isBuy ? item.getBalance() > 0 : item.getValue() < 0;
 		}
 	}
 }

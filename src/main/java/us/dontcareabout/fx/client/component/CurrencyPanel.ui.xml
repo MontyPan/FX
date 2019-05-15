@@ -16,7 +16,6 @@
 	
 	<c:HorizontalLayoutContainer>
 		<fx:CurrencyCB ui:field="currencyCB" layoutData="{cbHLD}" />
-		<b:TextButton ui:field="buyBtn" layoutData="{btnHLD}" text="買入" />
-		<b:TextButton ui:field="sellBtn" layoutData="{btnHLD}" text="賣出" />
+		<b:TextButton ui:field="submitBtn" layoutData="{btnHLD}" text="確定" />
 	</c:HorizontalLayoutContainer>
 </ui:UiBinder> 
