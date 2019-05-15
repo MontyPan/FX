@@ -1,6 +1,8 @@
 package us.dontcareabout.fx.client.component;
 
 import com.sencha.gxt.chart.client.draw.RGB;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
+import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
 import us.dontcareabout.fx.client.Util;
 import us.dontcareabout.fx.client.data.DataCenter;
@@ -9,6 +11,7 @@ import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler
 import us.dontcareabout.fx.client.data.RateReadyEvent;
 import us.dontcareabout.fx.client.data.RateReadyEvent.RateReadyHandler;
 import us.dontcareabout.fx.client.data.TxSummary;
+import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.tool.CurrencyUtil;
 import us.dontcareabout.gxt.client.draw.LTextSprite;
@@ -38,6 +41,12 @@ public class SummaryLayer extends LayerSprite {
 		nameTS.setTextColor(RGB.WHITE);
 		nameTS.setBgColor(RGB.BLUE);
 		nameTS.setText(CurrencyUtil.name(currency));
+		nameTS.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				UiCenter.changeCurrency(currency);
+			}
+		});
 
 		makeUp(balanceTS);
 		makeUp(costTS);
