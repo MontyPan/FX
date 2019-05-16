@@ -48,6 +48,7 @@ public class ForeignGrid extends Grid<ForeignTX> {
 			public void onForeignTxReady(ForeignTxReadyEvent event) {
 				getStore().clear();
 				getStore().addAll(DataCenter.getForeignList());
+				getView().refresh(false);
 			}
 		});
 
