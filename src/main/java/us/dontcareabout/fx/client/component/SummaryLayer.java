@@ -31,7 +31,6 @@ public class SummaryLayer extends LayerSprite {
 	public SummaryLayer(Currency c) {
 		currency = c;
 
-		setBgColor(RGB.GREEN);
 		add(nameTS);
 		add(balanceTS);
 		add(costTS);
@@ -100,7 +99,10 @@ public class SummaryLayer extends LayerSprite {
 		TxSummary result = DataCenter.getSummary(currency);
 		setBalance(result.balance);
 		setCost(result.cost);
-		setRate(DataCenter.getRateMap().get(currency));
+
+		double rate = DataCenter.getRateMap().get(currency);
+		setRate(rate);
+		setBgColor(rate * result.balance > result.cost ? RGB.RED : RGB.GREEN);
 	}
 
 	private void setBalance(double value) {

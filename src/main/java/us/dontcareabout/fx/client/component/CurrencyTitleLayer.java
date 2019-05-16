@@ -31,8 +31,8 @@ public class CurrencyTitleLayer extends LayerSprite {
 		});
 		add(currencyTB);
 
-		buyTB.setBgColor(RGB.RED);
-		buyTB.setTextColor(RGB.WHITE);
+		buyTB.setBgColor(RGB.WHITE);
+		buyTB.setTextColor(RGB.RED);
 		buyTB.setBgRadius(5);
 		buyTB.setHidden(true);
 		buyTB.addSpriteSelectionHandler(new SpriteSelectionHandler() {
@@ -43,7 +43,7 @@ public class CurrencyTitleLayer extends LayerSprite {
 		});
 		add(buyTB);
 
-		sellTB.setBgColor(RGB.GREEN);
+		sellTB.setBgColor(RGB.RED);
 		sellTB.setTextColor(RGB.WHITE);
 		sellTB.setBgRadius(5);
 		sellTB.setHidden(true);

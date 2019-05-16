@@ -69,10 +69,10 @@ public class TxPanel extends Composite {
 		//懶得用 editor framework 了...... Zzzz
 		ForeignTX foreignTX = new ForeignTX();
 		foreignTX.setCurrency(currency);
-		foreignTX.setDate(date.getValue() == null ? new DateWrapper().clearTime().asDate() : date.getValue());
-		foreignTX.setNote(note.getValue());
-		foreignTX.setRate(rate.getValue());
-		foreignTX.setValue(txType ? value.getValue() : value.getValue() * -1);
+		foreignTX.setDate(date.getCurrentValue() == null ? new DateWrapper().clearTime().asDate() : date.getCurrentValue());
+		foreignTX.setNote(note.getCurrentValue());
+		foreignTX.setRate(rate.getCurrentValue());
+		foreignTX.setValue(txType ? value.getCurrentValue() : value.getCurrentValue() * -1);
 		DataCenter.transaction(foreignTX);
 	}
 }
