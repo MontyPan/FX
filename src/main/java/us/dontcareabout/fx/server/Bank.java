@@ -15,7 +15,9 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import us.dontcareabout.fx.shared.AlertParam;
 import us.dontcareabout.fx.shared.CapitalTX;
+import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
 import us.dontcareabout.fx.shared.HasId;
 import us.dontcareabout.fx.shared.tool.CurrencyUtil;
@@ -24,16 +26,20 @@ import us.dontcareabout.java.common.Paths;
 
 /**
  * 負責交易紀錄的存取。
+ * 因為懶惰，所以連 {@link AlertParam} 也一起放進來了... [毆飛]。
  */
 public class Bank {
 	private static final Setting SETTING = new Setting();
+	private static final String ALERT = "alert.json";
 	private static final String CAPITAL = "capital.json";
 	private static final String FOREIGN = "foreign.json";
 
+	private static final File alertFile = new Paths(SETTING.workspace()).append(ALERT).toFile();
 	private static final File capitalFile = new Paths(SETTING.workspace()).append(CAPITAL).toFile();
 	private static final File foreignFile = new Paths(SETTING.workspace()).append(FOREIGN).toFile();
 
 	private static final Gson gson = new Gson();
+	private static final Type alertType = new TypeToken<HashMap<Currency, AlertParam>>(){}.getType();
 	private static final Type capitalType = new TypeToken<ArrayList<CapitalTX>>(){}.getType();
 	private static final Type foreignType = new TypeToken<ArrayList<ForeignTX>>(){}.getType();
 
@@ -167,5 +173,27 @@ public class Bank {
 	private static void settingId(HasId hasId) {
 		hasId.setId(idCounter);
 		idCounter++;
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	public static HashMap<Currency, AlertParam> getAlertParamMap() {
+		try {
+			return gson.fromJson(
+				Files.newReader(alertFile, Charsets.UTF_8), alertType
+			);
+		} catch (Exception e) {
+			return new HashMap<>();
+		}
+	}
+
+	public static void saveAlertParam(HashMap<Currency, AlertParam> alertMap) throws IOException {
+		Files.write(
+			gson.toJson(
+				alertMap,
+				alertType
+			).getBytes(Charsets.UTF_8),
+			alertFile
+		);
 	}
 }
