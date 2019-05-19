@@ -12,10 +12,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import us.dontcareabout.fx.client.RpcService;
 import us.dontcareabout.fx.client.RpcServiceAsync;
+import us.dontcareabout.fx.client.data.AlertParamReadyEvent.AlertParamReadyHandler;
 import us.dontcareabout.fx.client.data.CapitalTxReadyEvent.CapitalTxReadyHandler;
 import us.dontcareabout.fx.client.data.ForeignTxReadyEvent.ForeignTxReadyHandler;
 import us.dontcareabout.fx.client.data.RateReadyEvent.RateReadyHandler;
 import us.dontcareabout.fx.client.ui.UiCenter;
+import us.dontcareabout.fx.shared.AlertParam;
 import us.dontcareabout.fx.shared.CapitalTX;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
@@ -153,4 +155,42 @@ public class DataCenter {
 		return new TxSummary(currency, balance, cost, profit);
 	}
 	// ================ //
+
+	private static HashMap<Currency, AlertParam> alertMap;
+	public static HashMap<Currency, AlertParam> getAlertMap() {
+		return alertMap;
+	}
+
+	public static void wantAlertParam() {
+		rpc.getAlertMap(new AsyncCallback<HashMap<Currency,AlertParam>>() {
+			@Override
+			public void onSuccess(HashMap<Currency, AlertParam> result) {
+				alertMap = result;
+				eventBus.fireEvent(new AlertParamReadyEvent());
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
+
+	public static HandlerRegistration addAlertParamReady(AlertParamReadyHandler handler) {
+		return eventBus.addHandler(AlertParamReadyEvent.TYPE, handler);
+	}
+
+	public static void saveAlertParam(HashMap<Currency, AlertParam> map) {
+		rpc.saveAlertMap(map, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				wantAlertParam();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
 }
