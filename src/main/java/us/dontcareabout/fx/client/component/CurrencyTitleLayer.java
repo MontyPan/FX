@@ -4,9 +4,11 @@ import com.sencha.gxt.chart.client.draw.RGB;
 import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
 import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
+import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent;
 import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent.ChangeCurrencyHandler;
 import us.dontcareabout.fx.client.ui.UiCenter;
+import us.dontcareabout.fx.shared.AlertParam;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.tool.CurrencyUtil;
 import us.dontcareabout.gxt.client.draw.LTextSprite;
@@ -59,6 +61,7 @@ public class CurrencyTitleLayer extends LayerSprite {
 		add(sellTB);
 
 		alertLayer.setBgRadius(5);
+		alertLayer.setHidden(true);
 		add(alertLayer);
 
 		UiCenter.addChangeCurrency(new ChangeCurrencyHandler() {
@@ -68,6 +71,8 @@ public class CurrencyTitleLayer extends LayerSprite {
 				currencyTB.setText(CurrencyUtil.name(currency));
 				buyTB.setHidden(false);
 				sellTB.setHidden(false);
+				alertLayer.setHidden(false);
+				alertLayer.refresh();
 				redraw();
 			}
 		});
@@ -94,9 +99,9 @@ public class CurrencyTitleLayer extends LayerSprite {
 
 	private class AlertLayer extends LayerSprite {
 		private LTextSprite buyTitle = new LTextSprite("買匯：");
-		private LTextSprite buyMin = new LTextSprite("3.1415");
+		private LTextSprite buyMin = new LTextSprite();
 		private LTextSprite sellTitle = new LTextSprite("賣匯：");
-		private LTextSprite sellMax = new LTextSprite("19.85");
+		private LTextSprite sellMax = new LTextSprite();
 
 		AlertLayer() {
 			setBgColor(RGB.ORANGE);
@@ -127,6 +132,19 @@ public class CurrencyTitleLayer extends LayerSprite {
 
 		private void centerY(LTextSprite ts) {
 			ts.setLY((getHeight() - ts.getBBox().getHeight()) / 2 + TextUtil.getYOffset(ts));
+		}
+
+		void refresh() {
+			buyMin.setText("");
+			sellMax.setText("");
+
+			AlertParam ap = DataCenter.getAlertMap().get(currency);
+
+			if (ap == null) { return; }
+
+			buyMin.setText(ap.getBuyMin() == null ? "" : String.valueOf(ap.getBuyMin()));
+			sellMax.setText(ap.getSellMax() == null ? "" : String.valueOf(ap.getSellMax()));
+			adjustMember();
 		}
 	}
 }
