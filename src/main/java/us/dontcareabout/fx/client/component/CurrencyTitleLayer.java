@@ -99,9 +99,16 @@ public class CurrencyTitleLayer extends LayerSprite {
 
 	private class AlertLayer extends LayerSprite {
 		private LTextSprite buyTitle = new LTextSprite("買匯：");
-		private LTextSprite buyMin = new LTextSprite();
+		private LTextSprite buyMin = new LTextSprite("--");
 		private LTextSprite sellTitle = new LTextSprite("賣匯：");
-		private LTextSprite sellMax = new LTextSprite();
+		private LTextSprite sellMax = new LTextSprite("--");
+		//拿掉 dummy text 之後沒再測試，結果後來發現這裡有詭異的問題
+		//簡單地說結論：必須要等到第二次 refresh() 以後
+		//buyMin, sellMax 的垂直位置才會在正確的位置
+		//但是在 centerY() 當中 bbox.getHeight() 看不出什麼異常...... Orz
+		//現在 buyMin, sellMax 在初始時給 dummy text
+		//是為了在普通小數位數下第一次顯示能趨近正常...... (艸
+		//XXX 有閒情逸致的時候再回頭來作 SSCCE 查真相
 
 		AlertLayer() {
 			setBgColor(RGB.ORANGE);
