@@ -11,6 +11,7 @@ import us.dontcareabout.fx.client.ui.UiCenter;
 import us.dontcareabout.fx.shared.AlertParam;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.tool.CurrencyUtil;
+import us.dontcareabout.gxt.client.draw.Cursor;
 import us.dontcareabout.gxt.client.draw.LTextSprite;
 import us.dontcareabout.gxt.client.draw.LayerSprite;
 import us.dontcareabout.gxt.client.draw.component.TextButton;
@@ -62,6 +63,13 @@ public class CurrencyTitleLayer extends LayerSprite {
 
 		alertLayer.setBgRadius(5);
 		alertLayer.setHidden(true);
+		alertLayer.setMemberCursor(Cursor.POINTER);
+		alertLayer.addSpriteSelectionHandler(new SpriteSelectionHandler() {
+			@Override
+			public void onSpriteSelect(SpriteSelectionEvent event) {
+				UiCenter.alertParamDialog(currency);
+			}
+		});
 		add(alertLayer);
 
 		UiCenter.addChangeCurrency(new ChangeCurrencyHandler() {
