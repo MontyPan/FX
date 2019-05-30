@@ -4,6 +4,8 @@ import com.sencha.gxt.chart.client.draw.RGB;
 import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent;
 import com.sencha.gxt.chart.client.draw.sprite.SpriteSelectionEvent.SpriteSelectionHandler;
 
+import us.dontcareabout.fx.client.data.AlertParamReadyEvent;
+import us.dontcareabout.fx.client.data.AlertParamReadyEvent.AlertParamReadyHandler;
 import us.dontcareabout.fx.client.data.DataCenter;
 import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent;
 import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent.ChangeCurrencyHandler;
@@ -132,6 +134,15 @@ public class CurrencyTitleLayer extends LayerSprite {
 			add(buyMin);
 			add(sellTitle);
 			add(sellMax);
+
+			DataCenter.addAlertParamReady(new AlertParamReadyHandler() {
+				@Override
+				public void onAlertParamReady(AlertParamReadyEvent event) {
+					if (currency == null) { return; }
+
+					refresh();
+				}
+			});
 		}
 
 		@Override
