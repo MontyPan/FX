@@ -29,6 +29,8 @@ public class AlertParamPanel extends Composite {
 	private TextButton titleBtn = new TextButton();
 	private TextButton submitBtn = new TextButton("確定送出");
 
+	private AlertParam ap;
+
 	public AlertParamPanel() {
 		titleLayer = new SimpleLayerContainer(titleBtn);
 		submitLayer = new SimpleLayerContainer(submitBtn);
@@ -40,16 +42,22 @@ public class AlertParamPanel extends Composite {
 		submitBtn.addSpriteSelectionHandler(new SpriteSelectionHandler() {
 			@Override
 			public void onSpriteSelect(SpriteSelectionEvent event) {
-				//FIXME
+				save();
 			}
 		});
 	}
 
 	public void setData(Currency currency) {
-		AlertParam ap = DataCenter.getAlertMap().get(currency);
+		ap = DataCenter.getAlertMap().get(currency);
 
 		titleBtn.setText(CurrencyUtil.name(currency) + "價格警示設定");
 		buyMin.setValue(ap.getBuyMin());
 		sellMax.setValue(ap.getSellMax());
+	}
+
+	private void save() {
+		ap.setBuyMin(buyMin.getCurrentValue());
+		ap.setSellMax(sellMax.getCurrentValue());
+		DataCenter.saveAlertParam();
 	}
 }
