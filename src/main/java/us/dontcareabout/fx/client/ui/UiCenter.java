@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.container.Viewport;
 
+import us.dontcareabout.fx.client.component.AlertParamPanel;
 import us.dontcareabout.fx.client.component.CurrencyPanel;
 import us.dontcareabout.fx.client.component.TxPanel;
 import us.dontcareabout.fx.client.ui.ChangeCurrencyEvent.ChangeCurrencyHandler;
@@ -83,6 +84,16 @@ public class UiCenter {
 
 		currencyPanel.cleanValue();
 		dialog(currencyPanel, 270, 70);
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	private static AlertParamPanel alertPanel;
+	public static void alertParamDialog(Currency currency) {
+		if (alertPanel == null) { alertPanel = new AlertParamPanel(); }
+
+		alertPanel.setData(currency);
+		dialog(alertPanel, 230, 180);
 	}
 
 	//////////////////////////////////////////////////////////////////

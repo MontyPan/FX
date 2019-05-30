@@ -1,5 +1,6 @@
 package us.dontcareabout.fx.server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import us.dontcareabout.fx.client.RpcService;
 import us.dontcareabout.fx.server.rate.Bot;
 import us.dontcareabout.fx.server.rate.RateFetcher;
+import us.dontcareabout.fx.shared.AlertParam;
 import us.dontcareabout.fx.shared.CapitalTX;
 import us.dontcareabout.fx.shared.Currency;
 import us.dontcareabout.fx.shared.ForeignTX;
@@ -35,5 +37,19 @@ public class RpcServiceImpl extends RemoteServiceServlet implements RpcService {
 	@Override
 	public HashMap<Currency, Double> getRateMap() {
 		return rateFetcher.get();
+	}
+
+	@Override
+	public HashMap<Currency, AlertParam> getAlertMap() {
+		return Bank.getAlertParamMap();
+	}
+
+	@Override
+	public void saveAlertMap(HashMap<Currency, AlertParam> alertMap) {
+		try {
+			Bank.saveAlertParam(alertMap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
