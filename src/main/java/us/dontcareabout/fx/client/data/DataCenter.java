@@ -161,6 +161,21 @@ public class DataCenter {
 		return alertMap;
 	}
 
+	public static void saveAlertParam() {
+		rpc.saveAlertMap(alertMap, new AsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result) {
+				wantAlertParam();
+				UiCenter.closeDialog();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
+
 	public static void wantAlertParam() {
 		rpc.getAlertMap(new AsyncCallback<HashMap<Currency,AlertParam>>() {
 			@Override
